@@ -1,4 +1,4 @@
-package com.example.newsviews.view;
+package com.example.newsviews.view.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

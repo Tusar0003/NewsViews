@@ -7,6 +7,7 @@ public class Preferences {
 
     private static final String PREFERENCE_NAME = "Preferences";
     private static final String PREFERENCE_KEY_STATUS = "KeyHost";
+    private static final String PREFERENCE_KEY_LOG_IN = "KeyLogIn";
 
     private Context mContext;
     private SharedPreferences mPreferences;
@@ -27,5 +28,16 @@ public class Preferences {
     // Getting the status
     public boolean isFirstTime() {
         return mPreferences.getBoolean(PREFERENCE_KEY_STATUS, true);
+    }
+
+    // Creating user log in session
+    public void setUserLoggedIn(boolean status) {
+        editor.putBoolean(PREFERENCE_KEY_LOG_IN, status);
+        editor.apply();
+    }
+
+    // Getting the status
+    public boolean isUserLoggedIn() {
+        return mPreferences.getBoolean(PREFERENCE_KEY_LOG_IN, false);
     }
 }
