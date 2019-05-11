@@ -1,5 +1,6 @@
 package com.example.newsviews.view.activity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -7,25 +8,38 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.newsviews.R;
+import com.example.newsviews.model.pojo.Article;
 import com.example.newsviews.model.preferenecs.Preferences;
 import com.example.newsviews.presenter.activityPresenter.HomePresenter;
+import com.example.newsviews.presenter.adapter.ArticleAdapter;
 import com.example.newsviews.view.fragment.AboutFragment;
 import com.example.newsviews.view.fragment.AlertDialog;
+import com.example.newsviews.view.fragment.ArticleFragment;
 import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 
-public class HomeActivity extends AppCompatActivity implements HomePresenter.View {
+import java.util.List;
+
+public class HomeActivity extends AppCompatActivity implements HomePresenter.View, ArticleAdapter.OnItemClick {
+
+    private static final String TAG = "HomeActivity";
 
     private ActionBarDrawerToggle mToggle;
 
+    private RecyclerView mArticlesRecyclerView;
+
     private HomePresenter mPresenter;
     private Preferences mPreferences;
+    private ProgressDialog mProgressDialog;
     private AlertDialog mAlertDialog;
 
     @Override
@@ -35,7 +49,13 @@ public class HomeActivity extends AppCompatActivity implements HomePresenter.Vie
 
         mPresenter = new HomePresenter(this);
         mPreferences = new Preferences(this);
+        mProgressDialog = new ProgressDialog(this);
         mAlertDialog = new AlertDialog(this);
+
+        mProgressDialog.setMessage(getString(R.string.please_wait));
+        mProgressDialog.setCancelable(false);
+
+        mArticlesRecyclerView = findViewById(R.id.recycler_view_articles);
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.navigation_view);
@@ -62,11 +82,34 @@ public class HomeActivity extends AppCompatActivity implements HomePresenter.Vie
                 return true;
             }
         });
+
+        mPresenter.getArticles();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return mToggle.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void setArticleList(List<Article> articleList) {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        mArticlesRecyclerView.setLayoutManager(layoutManager);
+        mArticlesRecyclerView.setHasFixedSize(true);
+
+        ArticleAdapter adapter = new ArticleAdapter(this, articleList);
+        mArticlesRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onItemClick(Article article) {
+        Log.e(TAG, "onItemClick: " + article.getTitle());
+        Bundle bundle = new Bundle();
+        bundle.putString("url", article.getUrl());
+
+        ArticleFragment articleFragment = new ArticleFragment();
+        articleFragment.setArguments(bundle);
+        articleFragment.show(getSupportFragmentManager(), "");
     }
 
     @Override
@@ -103,6 +146,21 @@ public class HomeActivity extends AppCompatActivity implements HomePresenter.Vie
     @Override
     public void finishActivity() {
         finish();
+    }
+
+    @Override
+    public ProgressDialog getProgressDialog() {
+        return mProgressDialog;
+    }
+
+    @Override
+    public void showProgressDialog() {
+        mProgressDialog.show();
+    }
+
+    @Override
+    public void dismissProgressDialog() {
+        mProgressDialog.dismiss();
     }
 
     @Override

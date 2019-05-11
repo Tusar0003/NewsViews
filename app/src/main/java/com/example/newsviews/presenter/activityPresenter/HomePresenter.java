@@ -1,10 +1,22 @@
 package com.example.newsviews.presenter.activityPresenter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
 import com.example.newsviews.R;
+import com.example.newsviews.model.pojo.Article;
+import com.example.newsviews.model.pojo.ArticleResponse;
 import com.example.newsviews.model.preferenecs.Preferences;
+import com.example.newsviews.presenter.service.ApiClient;
+import com.example.newsviews.presenter.service.ApiService;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomePresenter {
 
@@ -43,14 +55,63 @@ public class HomePresenter {
         }
     }
 
+    public void getArticles() {
+        showProgressDialog();
+
+        ApiService apiService = ApiClient.getApiClient().create(ApiService.class);
+
+        Call<ArticleResponse> call = apiService.getNewsHeadLines("us", mContext.getString(R.string.apiKey));
+        call.enqueue(new Callback<ArticleResponse>() {
+            @Override
+            public void onResponse(Call<ArticleResponse> call, Response<ArticleResponse> response) {
+                try {
+                    if (response.isSuccessful() && response.body().getStatus().equalsIgnoreCase("ok")) {
+                        if (response.body().getArticles().size() > 0) {
+                            List<Article> articleList = new ArrayList<>(response.body().getArticles());
+                            mView.setArticleList(articleList);
+                        }
+                    } else {
+                        mView.showAlertDialog(response.message());
+                    }
+                } catch (Exception e) {
+                    mView.showAlertDialog(e.getMessage());
+                }
+
+                dismissProgressDialog();
+            }
+
+            @Override
+            public void onFailure(Call<ArticleResponse> call, Throwable t) {
+                dismissProgressDialog();
+                mView.showAlertDialog(t.getMessage());
+            }
+        });
+    }
+
+    private void showProgressDialog() {
+        if (!mView.getProgressDialog().isShowing()) {
+            mView.showProgressDialog();
+        }
+    }
+
+    private void dismissProgressDialog() {
+        if (mView.getProgressDialog().isShowing()) {
+            mView.dismissProgressDialog();
+        }
+    }
+
     public void finishActivity() {
         mView.finishActivity();
     }
 
     public interface View {
+        void setArticleList(List<Article> articleList);
         void showLogOutConfirmation();
         void finishActivity();
         void showAboutDialog();
+        ProgressDialog getProgressDialog();
+        void showProgressDialog();
+        void dismissProgressDialog();
         void showAlertDialog(String message);
     }
 }
