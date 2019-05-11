@@ -12,4 +12,6 @@
     <string name="drawer_open">Drawer Open</string>
     <string name="error">Error!</string>
     <string name="ok">OK</string>
+    <string name="about_details">NewsView is an app where different news could be found. One person can
+        also search for the news.</string>
 </resources>

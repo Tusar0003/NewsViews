@@ -108,7 +108,11 @@ public class IntroductionPresenter {
                     String id = object.getString("id");
 
                     // From ID creating the image url
-                    String imageUrl = "https://graph.facebook.com/" + id + "picture?type=normal";
+                    String imageUrl = "https://graph.facebook.com/" + id + "/picture?type=normal";
+
+                    mPreferences.setLastName(lastName);
+                    mPreferences.setEmail(email);
+                    mPreferences.setImageUrl(imageUrl);
 
                     Log.e(TAG, "onCompleted: " + firstName + "\n" + lastName + "\n" + email + "\n" +
                             id + "\n" + imageUrl);
@@ -120,8 +124,8 @@ public class IntroductionPresenter {
         });
 
         Bundle parameters = new Bundle();
-//        parameters.putString("fields", "first_name, last_name, email, id");
-        parameters.putString("fields", "email");
+        parameters.putString("fields", "id, first_name, last_name, email");
+//        parameters.putString("fields", "email");
         graphRequest.setParameters(parameters);
         graphRequest.executeAsync();
     }

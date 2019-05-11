@@ -8,7 +8,7 @@
     android:background="@color/colorPrimary">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/employee_image_view"
+        android:id="@+id/image_view_navigation"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginEnd="10dp"
@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_toEndOf="@id/employee_image_view"
+        android:layout_toEndOf="@id/image_view_navigation"
         android:textColor="@android:color/white"
         android:textStyle="bold"
         android:textSize="20sp" />
@@ -29,7 +29,7 @@
         android:id="@+id/text_view_navigation_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/employee_image_view"
+        android:layout_toEndOf="@+id/image_view_navigation"
         android:layout_below="@id/text_view_navigation_user_name"
         android:textColor="@android:color/white" />
 
