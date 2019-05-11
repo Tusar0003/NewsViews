@@ -4,15 +4,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 
 import com.example.newsviews.R;
-import com.example.newsviews.model.Preferences;
+import com.example.newsviews.model.preferenecs.Preferences;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -132,6 +130,10 @@ public class IntroductionPresenter {
         mView.goToHomeActivity();
     }
 
+    public void showAlertDialog(String message) {
+        mView.showAlertDialog(message);
+    }
+
     public interface View {
         void removeAllViews();
         void initializeDotsView();
@@ -142,5 +144,6 @@ public class IntroductionPresenter {
         void enableBothButton();
         void showLogInLayout();
         void goToHomeActivity();
+        void showAlertDialog(String message);
     }
 }

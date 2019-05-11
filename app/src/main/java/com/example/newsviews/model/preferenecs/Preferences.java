@@ -1,4 +1,4 @@
-package com.example.newsviews.model;
+package com.example.newsviews.model.preferenecs;
 
 import android.content.Context;
 import android.content.SharedPreferences;

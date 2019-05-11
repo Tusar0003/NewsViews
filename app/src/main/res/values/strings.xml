@@ -8,4 +8,8 @@
     <string name="fb_login_protocol_scheme">fb719016035163290</string>
     <string name="go_to_home">Go To Home</string>
     <string name="or">OR</string>
+    <string name="drawer_close">Drawer Close</string>
+    <string name="drawer_open">Drawer Open</string>
+    <string name="error">Error!</string>
+    <string name="ok">OK</string>
 </resources>
