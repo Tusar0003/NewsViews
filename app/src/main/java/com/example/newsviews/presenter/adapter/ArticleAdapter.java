@@ -3,9 +3,12 @@ package com.example.newsviews.presenter.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +23,8 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> {
+
+    private static final String TAG = "ArticleAdapter";
 
     private Context mContext;
     private List<Article> mArticleList;
@@ -44,10 +49,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int position) {
         try {
-            if (!TextUtils.isEmpty(mArticleList.get(position).getAuthor().toString())) {
-                viewHolder.mAuthorTextView.setText(mArticleList.get(position).getAuthor().toString());
-            }
-
             viewHolder.mTitleTextView.setText(mArticleList.get(position).getTitle());
             viewHolder.mDateTextView.setText(mArticleList.get(position).getPublishedAt());
             viewHolder.mDescriptionTextView.setText(mArticleList.get(position).getDescription());
@@ -55,6 +56,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
 
             Picasso.get().load(mArticleList.get(position).getUrlToImage()).placeholder(R.drawable.news)
                     .into(viewHolder.mNewsImageView);
+
+            if (mArticleList.get(position).getAuthor() != null) {
+                viewHolder.mAuthorTextView.setText(mArticleList.get(position).getAuthor().toString());
+            }
 
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -66,6 +71,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.dismiss();
+                                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                                    intent.setData(Uri.parse(mArticleList.get(position).getUrl()));
+                                    mContext.startActivity(intent);
+
                                 }
                             })
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -79,6 +88,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
                 }
             });
         } catch (Exception e) {
+            Log.e(TAG, "onBindViewHolder: " + e);
 //            AlertDialog alertDialog = new AlertDialog(mContext);
 //            alertDialog.show(e.getMessage());
         }
@@ -87,6 +97,16 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     @Override
     public int getItemCount() {
         return mArticleList.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

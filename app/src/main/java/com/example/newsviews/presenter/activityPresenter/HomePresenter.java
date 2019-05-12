@@ -35,13 +35,12 @@ public class HomePresenter {
     public void onNavigationItemSelected(int itemId) {
         switch (itemId) {
             case R.id.menu_home:
+                mView.closeNavigationDrawer();
                 break;
             case R.id.menu_about:
-                Log.e(TAG, "onNavigationItemSelected: ");
                 mView.showAboutDialog();
                 break;
             case R.id.menu_exit:
-                Log.e(TAG, "onNavigationItemSelected: ");
                 checkLogInStatus();
                 break;
         }
@@ -58,7 +57,8 @@ public class HomePresenter {
     public void getArticles() {
         showProgressDialog();
 
-        ApiService apiService = ApiClient.getApiClient().create(ApiService.class);
+        ApiClient.BASE_URL = "https://newsapi.org/";
+        ApiService apiService = ApiClient.getApiClient("https://newsapi.org/").create(ApiService.class);
 
         Call<ArticleResponse> call = apiService.getNewsHeadLines("us", mContext.getString(R.string.apiKey));
         call.enqueue(new Callback<ArticleResponse>() {
@@ -106,6 +106,7 @@ public class HomePresenter {
 
     public interface View {
         void setArticleList(List<Article> articleList);
+        void closeNavigationDrawer();
         void showLogOutConfirmation();
         void finishActivity();
         void showAboutDialog();

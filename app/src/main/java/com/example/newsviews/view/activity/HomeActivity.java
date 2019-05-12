@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,6 +26,7 @@ import com.example.newsviews.presenter.adapter.ArticleAdapter;
 import com.example.newsviews.view.fragment.AboutFragment;
 import com.example.newsviews.view.fragment.AlertDialog;
 import com.example.newsviews.view.fragment.ArticleFragment;
+import com.example.newsviews.view.fragment.SearchFragment;
 import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 
@@ -34,6 +37,7 @@ public class HomeActivity extends AppCompatActivity implements HomePresenter.Vie
     private static final String TAG = "HomeActivity";
 
     private ActionBarDrawerToggle mToggle;
+    private DrawerLayout mDrawerLayout;
 
     private RecyclerView mArticlesRecyclerView;
 
@@ -57,11 +61,11 @@ public class HomeActivity extends AppCompatActivity implements HomePresenter.Vie
 
         mArticlesRecyclerView = findViewById(R.id.recycler_view_articles);
 
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.navigation_view);
-        mToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close);
 
-        drawerLayout.addDrawerListener(mToggle);
+        mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -88,7 +92,19 @@ public class HomeActivity extends AppCompatActivity implements HomePresenter.Vie
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_search) {
+            SearchFragment searchFragment = new SearchFragment();
+            searchFragment.show(getSupportFragmentManager(), null);
+        }
+
         return mToggle.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.home_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -102,8 +118,12 @@ public class HomeActivity extends AppCompatActivity implements HomePresenter.Vie
     }
 
     @Override
+    public void closeNavigationDrawer() {
+        mDrawerLayout.closeDrawers();
+    }
+
+    @Override
     public void onItemClick(Article article) {
-        Log.e(TAG, "onItemClick: " + article.getTitle());
         Bundle bundle = new Bundle();
         bundle.putString("url", article.getUrl());
 
