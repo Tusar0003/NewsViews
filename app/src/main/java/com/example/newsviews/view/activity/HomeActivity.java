@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ public class HomeActivity extends AppCompatActivity implements HomePresenter.Vie
     private DrawerLayout mDrawerLayout;
 
     private RecyclerView mArticlesRecyclerView;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private HomePresenter mPresenter;
     private Preferences mPreferences;
@@ -87,6 +89,14 @@ public class HomeActivity extends AppCompatActivity implements HomePresenter.Vie
             }
         });
 
+        mSwipeRefreshLayout = findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mPresenter.getArticles();
+            }
+        });
+
         mPresenter.getArticles();
     }
 
@@ -115,6 +125,16 @@ public class HomeActivity extends AppCompatActivity implements HomePresenter.Vie
 
         ArticleAdapter adapter = new ArticleAdapter(this, articleList);
         mArticlesRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public SwipeRefreshLayout getSwipeRefreshLayout() {
+        return mSwipeRefreshLayout;
+    }
+
+    @Override
+    public void setRefreshOff() {
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

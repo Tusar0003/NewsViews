@@ -2,6 +2,7 @@ package com.example.newsviews.presenter.activityPresenter;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 
 import com.example.newsviews.R;
@@ -78,6 +79,9 @@ public class HomePresenter {
                 }
 
                 dismissProgressDialog();
+                if (mView.getSwipeRefreshLayout().isRefreshing()) {
+                    mView.setRefreshOff();
+                }
             }
 
             @Override
@@ -106,6 +110,8 @@ public class HomePresenter {
 
     public interface View {
         void setArticleList(List<Article> articleList);
+        SwipeRefreshLayout getSwipeRefreshLayout();
+        void setRefreshOff();
         void closeNavigationDrawer();
         void showLogOutConfirmation();
         void finishActivity();

@@ -7,69 +7,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.activity.HomeActivity">
 
-    <!--<android.support.v7.widget.Toolbar-->
-        <!--android:id="@+id/toolbar_top"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:minHeight="?attr/actionBarSize"-->
-        <!--android:background="@color/colorPrimary"-->
-        <!--app:theme="@style/ToolBarTheme" >-->
-
-
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Toolbar Title"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:id="@+id/toolbar_title" />-->
-
-
-    <!--</android.support.v7.widget.Toolbar>-->
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!--<android.support.v7.widget.Toolbar-->
-            <!--android:id="@+id/custom_toolbar"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="?attr/actionBarSize"-->
-            <!--android:background="@color/colorPrimary">-->
-
-            <!--<RelativeLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="?actionBarSize"-->
-                    <!--android:paddingLeft="8dp"-->
-                    <!--android:gravity="center"-->
-                    <!--style="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Title"-->
-                    <!--android:textColor="@android:color/white"-->
-                    <!--android:text="Home" />-->
-
-                <!--<ImageView-->
-                    <!--android:id="@+id/image_view_search"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_marginRight="10dp"-->
-                    <!--android:gravity="center_vertical"-->
-                    <!--android:layout_alignParentRight="true"-->
-                    <!--android:tint="@android:color/white"-->
-                    <!--android:src="@drawable/ic_action_search" />-->
-            <!--</RelativeLayout>-->
-        <!--</android.support.v7.widget.Toolbar>-->
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view_articles"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="4dp"
-            android:layout_below="@+id/custom_toolbar">
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent">
 
-        <!--<include layout="@layout/single_news_layout" />-->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view_articles"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="4dp">
+            </android.support.v7.widget.RecyclerView>
+        </android.support.v4.widget.SwipeRefreshLayout>
     </RelativeLayout>
 
     <android.support.design.widget.NavigationView
