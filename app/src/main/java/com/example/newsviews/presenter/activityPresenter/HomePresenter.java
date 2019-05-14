@@ -59,6 +59,7 @@ public class HomePresenter {
         showProgressDialog();
 
         ApiClient.BASE_URL = "https://newsapi.org/";
+        ApiClient.setApiClient("https://newsapi.org/");
         ApiService apiService = ApiClient.getApiClient("https://newsapi.org/").create(ApiService.class);
 
         Call<ArticleResponse> call = apiService.getNewsHeadLines("us", mContext.getString(R.string.apiKey));
