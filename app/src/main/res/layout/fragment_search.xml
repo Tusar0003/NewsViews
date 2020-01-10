@@ -24,15 +24,18 @@
             android:padding="16dp"
             android:drawableTint="@android:color/black"
             android:drawableStart="@drawable/ic_action_search"
-            android:drawablePadding="5dp" />
+            android:drawablePadding="5dp"
+            android:hint="Numbers" />
 
-        <Button
+        <TextView
             android:id="@+id/button_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
-            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            android:textStyle="bold"
             android:text="@string/search" />
     </LinearLayout>
 
@@ -47,7 +50,7 @@
         android:textAlignment="center"
         android:textSize="25sp"
         android:textColor="@android:color/black"
-        android:text="" />
+        android:hint="Input numbers for getting search result" />
 
     <RelativeLayout
         android:layout_width="match_parent"
